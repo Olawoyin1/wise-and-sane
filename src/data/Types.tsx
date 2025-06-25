@@ -43,5 +43,6 @@ export interface CardItem {
   buttonLink: string;
   buttonBgColor: string;
   created_at: string;
+  platforms : string
 }
   

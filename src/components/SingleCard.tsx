@@ -70,7 +70,7 @@ const SingleCard = ({ item }: { item: CardItem }) => {
               <div className="w-max">
                 <Link
                   to={`/tag/${item.category}`}
-                  className="text-sm sm:text-[17px] border z-20 border-black/90 rounded-full 
+                  className="text-sm sm:text-[17px] border z-20 border-blue-400 rounded-full 
                   px-4 py-1 font-bold no-underline 
                   flex justify-center items-center transform text-white rotate-180 origin-center"
                   style={{ backgroundColor: item.buttonBgColor }}
@@ -84,7 +84,7 @@ const SingleCard = ({ item }: { item: CardItem }) => {
                 <div className="relative group">
                   <Link
                     to="/"
-                    className="w-8 h-8 sm:h-10 sm:w-10 border text-white border-black/90 rounded-full 
+                    className="w-8 h-8 sm:h-10 sm:w-10 border text-white border-blue-400 rounded-full 
                     flex justify-center items-center rotate-270 text-xs font-bold md:text-sm"
                     style={{ backgroundColor: item.buttonBgColor }}
                   >

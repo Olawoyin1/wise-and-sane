@@ -3,7 +3,7 @@ import { CardItem } from "../data/Types";
 
 export const fetchBlogPosts = async (): Promise<CardItem[]> => {
   // const res = await fetch("http://localhost:8000/api/posts/");
-  const res = await fetch("https://sosoiloji.onrender.com/api/posts/");
+  const res = await fetch("https://sosoiloji.onrender.com/api/posts/?platform=wiseandsane");
   const data = await res.json();
 
   const cleanText = (html: string): string => {
@@ -14,7 +14,7 @@ export const fetchBlogPosts = async (): Promise<CardItem[]> => {
 
   const CATEGORY_COLORS: Record<string, string> = {
     Inspiration: "#D5AAFF",
-    Qoute: "#FAD9E6",
+    Wisdom: "#286090",
     Survey: "#FFD682",
     Article: "#5DA6D8",
     Video: "#B8F2E6",

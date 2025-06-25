@@ -93,7 +93,7 @@ const Navbar = () => {
                       }, 600); // Match your motion exit transition
                     }}
                     className={`hover:text-blue-400 tracking-[3px] text-black transition ${
-        index === 0 ? "text-4xl font-bold" : "text-xl" } `}
+        index === 0 ? "text-2xl md:text-4xl font-bold" : "text-xl" } `}
                   >
                     {item.name}
                   </Link>
