@@ -14,7 +14,7 @@ const FancyLinkButton: React.FC<FancyLinkButtonProps> = ({
   label,
   to,
   bgColor = "#E8D4C3",
-  textColor = "#333",
+  textColor = "#ffffff",
   block = false,
 }) => {
   const btnRef = useRef<HTMLDivElement>(null);

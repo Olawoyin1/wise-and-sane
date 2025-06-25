@@ -143,7 +143,7 @@ const TagCloud: React.FC = () => {
   </h3>
 
   {/* Main Tag Container */}
-  <div className="relative w-full bg-[#FFF0D3]  flex align-center justify-center rounded-[15px] shadow-md p-4 md:h-[270px] h-auto" id="tag-box">
+  <div className="relative w-full bg-[#5DA6D8]  flex align-center justify-center rounded-[15px] shadow-md p-4 md:h-[270px] h-auto" id="tag-box">
     <div className="flex flex-col justify-center items-center w-full">
       {socialLinks.map((link) => (
         <FancyLinkButton

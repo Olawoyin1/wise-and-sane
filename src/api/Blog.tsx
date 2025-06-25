@@ -16,7 +16,7 @@ export const fetchBlogPosts = async (): Promise<CardItem[]> => {
     Inspiration: "#D5AAFF",
     Qoute: "#FAD9E6",
     Survey: "#FFD682",
-    Article: "#E8D4C3",
+    Article: "#5DA6D8",
     Video: "#B8F2E6",
   };
 

@@ -147,7 +147,7 @@ const TagCloud: React.FC = () => {
 
       {/* Main Tag Container */}
       <div
-        className="relative w-full bg-[#FFF0D3] flex items-center justify-center rounded-[15px] shadow-md p-4 md:h-[270px] h-auto"
+        className="relative w-full bg-[#5DA6D8] flex items-center justify-center rounded-[15px] shadow-md p-4 md:h-[270px] h-auto"
         id="tag-box"
       >
 
@@ -156,7 +156,7 @@ const TagCloud: React.FC = () => {
           
 
           <form className="subscribe-form mt-3" data-members-form="subscribe">
-            <h5 className="text-xl text-center mb-3 font-bold">Join The Movement</h5>
+            <h5 className="text-xl text-center text-white mb-3 font-bold">Join The Movement</h5>
             <div className="form-group">
               <input
                 type="text"

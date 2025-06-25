@@ -40,7 +40,7 @@ const SingleCard = ({ item }: { item: CardItem }) => {
               : { x: -20, y: 20 }
           }
           transition={{ type: "spring", stiffness: 200, damping: 20 }}
-          className="absolute top-0 left-0 w-full h-full border border-black rounded-xl cursor-pointer"
+          className="absolute top-0 left-0 w-full h-full border border-blue-700 rounded-xl cursor-pointer"
         >
           <Link
             to={`/post/${item.slug}`}
@@ -72,7 +72,7 @@ const SingleCard = ({ item }: { item: CardItem }) => {
                   to={`/tag/${item.category}`}
                   className="text-sm sm:text-[17px] border z-20 border-black/90 rounded-full 
                   px-4 py-1 font-bold no-underline 
-                  flex justify-center items-center transform rotate-180 origin-center"
+                  flex justify-center items-center transform text-white rotate-180 origin-center"
                   style={{ backgroundColor: item.buttonBgColor }}
                 >
                   {item.category}
@@ -84,7 +84,7 @@ const SingleCard = ({ item }: { item: CardItem }) => {
                 <div className="relative group">
                   <Link
                     to="/"
-                    className="w-8 h-8 sm:h-10 sm:w-10 border border-black/90 rounded-full 
+                    className="w-8 h-8 sm:h-10 sm:w-10 border text-white border-black/90 rounded-full 
                     flex justify-center items-center rotate-270 text-xs font-bold md:text-sm"
                     style={{ backgroundColor: item.buttonBgColor }}
                   >

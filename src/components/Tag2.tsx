@@ -50,7 +50,7 @@ const TagCloud: React.FC = () => {
 
       {/* Main Tag Container */}
       <div
-        className="relative w-full bg-[#FFF0D3] rounded-[15px]   justify-center gap-0  shadow-md p-4 md:h-[270px] h-auto"
+        className="relative w-full bg-[#5DA6D8] rounded-[15px]   justify-center gap-0  shadow-md p-4 md:h-[270px] h-auto"
         id="tag-box"
       >
         <div className="flex flex-wrap space-x-3 items-center w-full">
