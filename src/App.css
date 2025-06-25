@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&family=Matangi:wght@300..900&family=Noto+Sans+JP:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+
+
+*{
+    /* border: 1px solid red; */
+}
+
+
+
+
+body{
+    font-family: "Playfair Display", serif;
+    /* background-color: #FFF6E6; */
+    background-color: #DEE9F9;
+}
+
+  .pf, input , label{
+    font-family: "Noto Sans JP", sans-serif;
+  }
+  
+  .sf{
+    font-family: "Playfair Display", serif;
+    
+  }
+  
+  .bf{
+  font-family: "Noto Sans JP", sans-serif;
+  line-height: 2;
+  font-weight: 300 !important;
+}
+
+
+.blog-form input{
+    outline: none ;
+}
+
+input{
+  outline: none;
+}
+
+.main-card{
+    max-height: 520px;
+}
+
+.container{
+    max-width: 80%;
+    margin: 0 auto;
+}
+
+.bg-nav{
+    background-image: url('../public/Images/new.png');
+    background-repeat: no-repeat;
+    /* width: 100%; */
+    height: 100%;
+    background-color: #FFF6E6;
+    object-fit: cover;
+    background-size: cover;
+    z-index: 9000;
+    
+}
+
+
+
+.bg {
+    background-image: url('/Images/new.png'); /* ✅ Correct path */
+    /* background-color: #DEE9F9;
+    background-blend-mode: multiply; */
+  background-repeat: repeat-x;
+  background-size: cover;
+  position: absolute;
+  background-repeat: no-repeat;
+  left: 0;
+
+  top: 0;
+  width: 100%;
+  height: 490px;
+  z-index: -1; /* ✅ Put behind all other content */
+  animation: bgScroll 60s linear infinite alternate;
+}
+
+@keyframes bgScroll {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 0%;
+  }
+}
+
+
+
+.skeleton-card-container {
+  width: 100%;
+  max-width: 380px;
+  /* background-color: #fff; */
+  /* padding: 1rem; */
+  /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); */
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.skeleton-box {
+  background-color: #e0e0e0;
+  border-radius: 0.25rem;
+  border-radius: 0.7rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton-button-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.shimmer::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  height: 100%;
+  width: 150%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: shimmer 1.5s infinite ease-in-out;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -150%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+
+
+
+
+.ce-header[data-level="2"] {
+  font-size: 1.875rem;
+  font-weight: 600;
+}
+
+.ce-header[data-level="3"] {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.ce-header[data-level="4"] {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+
+
+
+@media (max-width:540px){
+    .container{
+        max-width: 88%;
+    }
+    
+
+    
+  
+}
+
+
