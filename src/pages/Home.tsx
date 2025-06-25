@@ -15,10 +15,10 @@ const Home = () => {
       <section className="relative z-10">
         <Navbar />
         <div className="max-w-7xl mx-auto px-8 md:px-12">
-          {/* <div className="mb-20">
+          <div className="mb-20">
 
           <ImageSlider />
-          </div> */}
+          </div>
         </div>
         <div className="">
           <BlogList />
