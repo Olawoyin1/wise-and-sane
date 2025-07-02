@@ -186,7 +186,6 @@ const CategoryPage = () => {
                 description: getPlainText(post.body).slice(0, 150) + "...",
                 buttonLabel: "Read More",
                 buttonLink: `/post/${post.id}`,
-                buttonBgColor: "#E8D4C3",
                 subTag: post.tag,
                 subTagC: post.subTag,
               }}

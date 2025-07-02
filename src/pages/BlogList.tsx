@@ -71,7 +71,7 @@ const BlogList = () => {
                     onClick={() => setCurrentPage((p) => p - 1)}
                     className=""
                   >
-                    <NormalButton label="Prev" bgColor="#FFE6B4" />
+                    <NormalButton label="Prev" bgColor="#5DA6D8" />
                     
                   </button>
                 )}
@@ -84,7 +84,7 @@ const BlogList = () => {
                       onClick={() => setCurrentPage(page)}
                       className={`px-4 py-1 cursor-pointer rounded ${
                         currentPage === page
-                          ? "bg-[#FFE6B4] text-black"
+                          ? "bg-[#5DA6D8] text-black"
                           : "hover:bg-gray-300 bg-[#EEEEEE]"
                       }`}
                     >
@@ -97,7 +97,7 @@ const BlogList = () => {
     onClick={() => setCurrentPage((p) => p + 1)}
     className=""
   >
-    <NormalButton label="Next" bgColor="#FFE6B4" />
+    <NormalButton label="Next" bgColor="#5DA6D8" />
     
   </button>
 )}
