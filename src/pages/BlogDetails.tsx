@@ -24,7 +24,11 @@ const Blog = () => {
 
   const blog = posts.find((post) => post.slug.toString() === slug);
 
-  console.log(blog)
+  console.log("blog", blog);
+console.log("callout", blog?.callout);
+console.log("product_card", blog?.product_card);
+
+
 
   if (isLoading) {
     return (
@@ -51,25 +55,21 @@ const Blog = () => {
     );
   }
 
-  // const transformedBody = parse(blog.body, {
-  //   replace: (node) => {
-  //     if (node instanceof Element && node.name === "img") {
-  //       const src = node.attribs.src;
-  //       const alt = node.attribs.alt || "blog image";
-  //       return <InlineImageViewer src={src} alt={alt} />;
-  //     }
-  //   },
-  // });
+ 
 
   return (
     <PageWrapper>
+      <section className="bg">
+
       <Navbar />
       <section className="relative z-10">
         
 
-        <BlogContentViewer {...blog} />
+        <BlogContentViewer {...blog} callout={blog.callout}
+  product_card={blog.product_card} />
       </section>
       <Footer />
+      </section>
     </PageWrapper>
   );
 };

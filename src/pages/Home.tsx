@@ -5,33 +5,25 @@ import { PageWrapper } from "../components/PageWrapper";
 import BlogList from "./BlogList";
 
 const Home = () => {
-    return (
+  return (
     <PageWrapper disableEntryAnimation>
-      {/* Fixed background image */}
-      <div className="bg" />
-
 
       {/* Content section */}
-      <section className="relative z-10">
+      <section className="bg z-10">
         <Navbar />
         <div className="max-w-7xl mx-auto px-8 md:px-12">
           <div className="mb-20">
-
-          <ImageSlider />
+            <ImageSlider />
           </div>
         </div>
         <div className="">
           <BlogList />
         </div>
+        <Footer />
       </section>
-
-
-
-      <Footer />
-
 
     </PageWrapper>
   );
 };
 
-      export default Home;
+export default Home;

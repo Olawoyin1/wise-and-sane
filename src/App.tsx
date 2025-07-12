@@ -8,21 +8,23 @@ import Home from "./pages/Home";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import NotFound from "./utils/NotFound";
-// import CreateBlogPostForm from "./pages/CreateBlog";
-// import Testingg from "./pages/CreateBlogForm";
 import Dashboard from "./admin/Dashboard";
 import CreateEditPostPage from "./pages/CreateEditPostPage";
-// import BlogDetail from "./pages/BlogDetail";
+import { Toaster } from 'sonner';
+import Author from "./pages/Author";
 
 const App = () => {
   return (
+    <>
+    <Toaster richColors position="top-right" />
+
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/post/:slug" element={<BlogDetail />} />
+      <Route path="/editor" element={<Author />} />
       <Route path="/tag/:tag" element={<TagPage />} />
       <Route path="/author/:author" element={<AuthorPage />} />
       <Route path="*" element={<NotFound />} />
-      {/* <Route path="create" element={<Testingg />} /> */}
 
 
       {/* Dashboard List */}
@@ -37,6 +39,7 @@ const App = () => {
         
 
     </Routes>
+    </>
   );
 };
 

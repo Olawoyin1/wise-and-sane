@@ -14,9 +14,9 @@ export const fetchBlogPosts = async (): Promise<CardItem[]> => {
 
   const CATEGORY_COLORS: Record<string, string> = {
     Inspiration: "#D5AAFF",
-    Wisdom: "#286090",
+    Wisdom: "#f9f9f0",
     Survey: "#FFD682",
-    Article: "#5DA6D8",
+    Article: "#BFDDF2",
     Video: "#B8F2E6",
   };
 
@@ -43,6 +43,8 @@ export const fetchBlogPosts = async (): Promise<CardItem[]> => {
       buttonBgColor: color,
       created_at: post.created_at,
       quote: post.quote,
+      callout: post.callout,
+      product_card: post.product_card,
       // content_images : post.content_images
     };
   });

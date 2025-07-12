@@ -8,6 +8,14 @@ const SingleCard = ({ item }: { item: CardItem }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
+
+  const getFirstParagraph = (html: string) => {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, "text/html");
+  const p = doc.querySelector("p");
+  return p ? p.outerHTML : "";
+};
+
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
@@ -40,7 +48,7 @@ const SingleCard = ({ item }: { item: CardItem }) => {
               : { x: -20, y: 20 }
           }
           transition={{ type: "spring", stiffness: 200, damping: 20 }}
-          className="absolute top-0 left-0 w-full h-full border border-blue-700 rounded-xl cursor-pointer"
+          className="absolute top-0 left-0 w-full h-full border border-black rounded-xl cursor-pointer"
         >
           <Link
             to={`/post/${item.slug}`}
@@ -70,9 +78,9 @@ const SingleCard = ({ item }: { item: CardItem }) => {
               <div className="w-max">
                 <Link
                   to={`/tag/${item.category}`}
-                  className="text-sm sm:text-[17px] border z-20 border-blue-400 rounded-full 
-                  px-4 py-1 font-bold no-underline 
-                  flex justify-center items-center transform text-white rotate-180 origin-center"
+                  className="text-sm sm:text-[16px] border z-20 border-black/90 rounded-full 
+                  px-4 py-[3px] font-bold no-underline 
+                  flex justify-center items-center transform rotate-180 origin-center"
                   style={{ backgroundColor: item.buttonBgColor }}
                 >
                   {item.category}
@@ -84,13 +92,11 @@ const SingleCard = ({ item }: { item: CardItem }) => {
                 <div className="relative group">
                   <Link
                     to="/"
-                    className="w-8 h-8 sm:h-10 sm:w-10 border text-white border-blue-400 rounded-full 
+                    className="w-8 h-8 sm:h-9 sm:w-9 border border-black/90 rounded-full 
                     flex justify-center items-center rotate-270 text-xs font-bold md:text-sm"
                     style={{ backgroundColor: item.buttonBgColor }}
                   >
-                    {item.category === "Inspiration"
-                      ? item.subTag
-                      : item.subTag?.charAt(0)}
+                    {item.subTag?.charAt(0)}
                   </Link>
 
                   <div
@@ -118,20 +124,18 @@ const SingleCard = ({ item }: { item: CardItem }) => {
       </div>
 
       {/* Text */}
-      <div className="pt-6">
+      <div className="mt-4  md:mt-10">
         <div className="mb-5">
-          <h1 className="text-xl md:text-2xl font-extrabold mb-3 leading-tight">
+          <h1 className="text-xl sc-header line-clamp-2 font-extrabold mb-3 leading-tight">
             {item.title}
           </h1>
 
-          {/* <p className="text-gray-700 line-clamp-3 leading-loose text-xs mb-3">
-            {item.description}
-          </p> */}
 
           <p
-            className="text-gray-700 pf line-clamp-3 leading-loose text-xs mb-3"
-            dangerouslySetInnerHTML={{ __html: item.body }}
-          />
+  className="text-gray-700 pf line-clamp-3 leading-loose text-xs mb-3"
+  dangerouslySetInnerHTML={{ __html: getFirstParagraph(item.body) }}
+/>
+
 
           <div className="flex items-center justify-between">
             <FancyLinkButton

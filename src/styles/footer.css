@@ -1,0 +1,37 @@
+
+  
+  /* Plane SVG */
+  .epcl-plane {
+    position: absolute;
+    top: -35px;
+    left: -66px;
+    z-index: 2;
+    transform: rotate(-10deg);
+  }
+  
+  
+
+  
+
+
+  
+  
+  
+  @media screen and (max-width: 640px) {
+    
+
+      .epcl-plane {
+        position: absolute;
+        top: 0%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        /* font-size: 20px; */
+        width: 70px;
+
+      
+      }
+      
+  }
+  
+  
+  

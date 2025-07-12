@@ -1,9 +1,10 @@
-import { useState } from "react";
-// import { FiMenu } from "react-icons/fi";
-import { IoMenu } from "react-icons/io5";
+// Navbar.tsx
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
-import { Link } from "react-router-dom";
+import { IoMenu } from "react-icons/io5";
 import { GrClose } from "react-icons/gr";
+import NavSectionContent from "./NavSectionContent";
+import { Link } from "react-router-dom";
 
 const containerVariant: Variants = {
   hidden: { opacity: 0 },
@@ -23,31 +24,58 @@ const itemVariant: Variants = {
 };
 
 const navItems = [
-  { name: "LAST GENERATION", href: "/last-generation" },
-  { name: "OUR PURPOSE", href: "/purpose" },
-  { name: "FILOSOFI", href: "/filosofi" },
-  { name: "IDEA IS CAPITAL", href: "/ideaiscapital" },
-  { name: "CONNECT", href: "/connect" },
+  { name: "LAST GENERATION", key: "last-generation" },
+  { name: "SOSIOLOJI", key: "sosioloji" },
+  { name: "OUR PURPOSE", key: "purpose" },
+  { name: "THE EDITOR", key: "editor" },
+  { name: "CONTRIBUTORS", key: "contributors" },
+  { name: "JOIN THE MOVEMENT", key: "movement" },
+  { name: "FILOSOFI", key: "filosofi" },
+  { name: "IDEA IS CAP", key: "ideaiscapital" },
+  { name: "CONNECT", key: "connect" },
 ];
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
 
+  const handleNavClick = (key: string) => {
+    setActiveSection(key); // opens content
+  };
+
+const closeSection = () => {
+    setActiveSection(null); // closes content
+  };
+
+  useEffect(() => {
+  if (menuOpen) {
+    document.body.style.overflow = "hidden"; // disable scroll
+  } else {
+    document.body.style.overflow = ""; // restore scroll
+  }
+
+  // Cleanup when unmounting
+  return () => {
+    document.body.style.overflow = "";
+  };
+}, [menuOpen]);
   return (
-    <nav className="w-full  z-50 relative mb-4">
+    <nav className="w-full z-50 relative">
       <div className="max-w-7xl mx-auto px-8 md:px-12">
-        <div className="flex items-center justify-between min-h-[100px] md:min-h-[200px]  mx-auto relative">
-          {/* Title */}
-          <h1 className="text-3xl md:text-6xl font-bold tracking-tight text-gray-800">
-            <Link to="/" className="block md:hidden">wiseandsane</Link>
-            <Link to='/' className="hidden md:block md:-translate-y-1/2 absolute left-1/2 -translate-x-1/2">
-              wiseandsane
+        <div className="flex items-center justify-between min-h-[100px] md:min-h-[200px] relative">
+          <p className="text-3xl md:text-6xl font-bold tracking-tight text-gray-800">
+            <Link to="/">
+              <span className="block md:hidden">wiseandsane</span>
             </Link>
-          </h1>
+            <Link to="/">
+              <span className="hidden md:block md:absolute left-1/2 -translate-x-1/2 -translate-y-1/2">
+                wiseandsane
+              </span>
+            </Link>
+          </p>
 
-          {/* Menu icon */}
           <div
-            className="text-3xl text-gray-700 cursor-pointer rotate-90 block md:absolute md:right-0 md:top-1/2 md:-translate-y-1/2"
+            className="text-3xl md:text-5xl text-gray-700 cursor-pointer rotate-90 block md:absolute md:right-0 md:top-1/2 md:-translate-y-1/2"
             onClick={() => setMenuOpen(true)}
           >
             <IoMenu />
@@ -55,56 +83,60 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Slide-up menu */}
       <AnimatePresence>
-        {menuOpen && (
+        {menuOpen  && (
           <motion.div
-            className="fixed inset-0 bg-nav z-50 flex items-center justify-center"
+            className="fixed inset-0 bg-nav z-40 flex items-center justify-center"
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ duration: 0.6, ease: "easeInOut" }}
           >
-            {/* Close icon */}
+            {/* Close Icon */}
             <div
-              className="absolute top-5 right-5 text-3xl cursor-pointer"
+              className="absolute top-5 right-5 text-4xl cursor-pointer z-50"
               onClick={() => setMenuOpen(false)}
             >
               <GrClose color="#000000" />
             </div>
 
-            {/* AnimatePresence for list */}
+            {/* Nav Items */}
             <motion.ul
-              className="w-full text-xl sm:text-3xl space-y-6 text-center"
+              className="w-full text-xl sm:text-3xl space-y-5 font-light text-center"
               variants={containerVariant}
               initial="hidden"
               animate="visible"
               exit="hidden"
             >
               {navItems.map((item, index) => (
-                <motion.li key={item.name} variants={itemVariant}>
-                  <Link
-                    to={item.href}
-                    onClick={(e) => {
-                      e.preventDefault(); // Prevent immediate routing
-                      setMenuOpen(false); // Trigger exit animation
-                      setTimeout(() => {
-                        // navigate(item.href); // Proper route transition
-                      }, 600); // Match your motion exit transition
-                    }}
-                    className={`hover:text-blue-400 tracking-[3px] text-black transition ${
-        index === 0 ? "text-2xl md:text-4xl font-bold" : "text-xl" } `}
+                <motion.li key={item.key} variants={itemVariant}>
+                  <button
+                    onClick={() => handleNavClick(item.key)}
+                    className={`hover:text-blue-400 tracking-[3px] cursor-pointer text-black transition ${
+                      index === 0
+                        ? "text-2xl md:text-4xl font-bold"
+                        : "text-xl font-light"
+                    }`}
                   >
                     {item.name}
-                  </Link>
-
+                  </button>
                   {item.name === "LAST GENERATION" && (
                     <div className="h-px w-[80%]  md:w-130 mx-auto bg-black/20 mt-9" />
+                  )}
+                  {item.name === "JOIN THE MOVEMENT" && (
+                    <div className="h-px w-[80%]  md:w-80 mx-auto bg-black/20 mt-9" />
                   )}
                 </motion.li>
               ))}
             </motion.ul>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Slide-Up Section Content */}
+      <AnimatePresence>
+        {activeSection && (
+          <NavSectionContent section={activeSection} onClose={closeSection} />
         )}
       </AnimatePresence>
     </nav>

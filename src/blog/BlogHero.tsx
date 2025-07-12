@@ -8,12 +8,14 @@ interface BlogHeroProps {
 const BlogHero = ({ blog, height = "medium" }: BlogHeroProps) => {
   const heightClass = {
     small: "sm:h-[300px] h-[250px]",
-    medium: "sm:h-[440px] h-[250px]",
+    medium: "sm:h-[500px]  h-[250px]",
     large: "sm:h-[500px] h-[250px]",
   }[height];
 
   return (
-    <div className="relative shrink-0">
+    <div className="max-w-7xl  mx-auto px-8 md:px-12">
+
+    <div className="relative mt-3  shrink-0">
       <img
         src={blog.image}
         alt={blog.title}
@@ -21,6 +23,7 @@ const BlogHero = ({ blog, height = "medium" }: BlogHeroProps) => {
         id="tag-box"
       />
       <span className="absolute border border-gray-700 rounded-[15px] opacity-50 z-[-1] bottom-[-7px] right-2 sm:bottom-[-14px] sm:right-4 w-full h-full" />
+    </div>
     </div>
   );
 };

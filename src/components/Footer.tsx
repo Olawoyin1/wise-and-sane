@@ -1,4 +1,4 @@
-// import '../styles/footer.css'
+import '../styles/footer.css'
 import LetsConnect from './LetsConnect';
 import Tags from './Tag2';
 import Subscribe from './Subscribe';

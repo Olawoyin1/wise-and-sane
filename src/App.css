@@ -8,13 +8,106 @@
 
 
 
+.editor-wrapper {
+  max-width: 800px;
+  /* margin: 40px auto; */
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  min-height: 800px;
+  /* height: 100%; */
+  position: relative;
+}
+
+.fullscreen {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw !important;
+  height: 100vh;
+  z-index: 9999;
+  background: white;
+  /* padding: 20px; */
+  /* overflow-y: auto; */
+  border-radius: 0;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.toolbar button {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  background: #f9f9f9;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.toolbar button:hover {
+  background: #eee;
+}
+
+.toolbar button.active {
+  background-color: #333;
+  color: white;
+  border-color: #333;
+}
+
+.custom-editor h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.custom-editor h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.75rem;
+}
+
+.custom-editor p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.custom-editor ul {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1rem;
+}
+
+.custom-editor li {
+  margin-bottom: 0.5rem;
+}
+
+.custom-editor hr {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 2rem 0;
+}
+
+
+
+.sc-header{
+  font-size: 1.5rem;
+  margin: 0;
+  margin-bottom: 12px;
+}
+
+
 
 body{
     font-family: "Playfair Display", serif;
-    /* background-color: #FFF6E6; */
     background-color: #DEE9F9;
-}
-
+  }
+  
   .pf, input , label{
     font-family: "Noto Sans JP", sans-serif;
   }
@@ -32,7 +125,7 @@ body{
 
 
 .blog-form input{
-    outline: none ;
+  outline: none ;
 }
 
 input{
@@ -49,34 +142,25 @@ input{
 }
 
 .bg-nav{
+     background-color: #DEE9F9;
     background-image: url('../public/Images/new.png');
-    background-repeat: no-repeat;
-    /* width: 100%; */
-    height: 100%;
-    background-color: #FFF6E6;
-    object-fit: cover;
     background-size: cover;
     z-index: 9000;
-    
+    background-repeat: no-repeat;
+
 }
 
 
 
 .bg {
-    background-image: url('/Images/new.png'); /* ✅ Correct path */
-    /* background-color: #DEE9F9;
-    background-blend-mode: multiply; */
-  background-repeat: repeat-x;
+  background-image: url('/Images/new.png'); 
   background-size: cover;
-  position: absolute;
   background-repeat: no-repeat;
-  left: 0;
-
-  top: 0;
+  
   width: 100%;
-  height: 490px;
+  height: 700px;
   z-index: -1; /* ✅ Put behind all other content */
-  animation: bgScroll 60s linear infinite alternate;
+  /* animation: bgScroll 60s linear infinite alternate; */
 }
 
 @keyframes bgScroll {
@@ -166,6 +250,10 @@ input{
 @media (max-width:540px){
     .container{
         max-width: 88%;
+    }
+
+    .sc-header{
+      font-size: 1.25rem;
     }
     
 
