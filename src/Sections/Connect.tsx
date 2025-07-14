@@ -106,7 +106,7 @@ const Connect = () => {
           <div className="mt-4">
             <ReCAPTCHA
               ref={recaptchaRef}
-              sitekey="YOUR_RECAPTCHA_SITE_KEY"
+              sitekey="6LflroIrAAAAAGzrkVnTQ1yImLQelxtD5uNzSADk"
               onChange={(value: string | null) => {
                 formik.setFieldValue("captcha", value);
               }}
