@@ -39,7 +39,7 @@ const TagCloud: React.FC = () => {
           
 
           <form className="subscribe-form mt-3" data-members-form="subscribe">
-            <h5 className="text-xl text-center mb-3 font-bold">Join The Movement</h5>
+            <h5 className="text-xl text-white text-center mb-3 font-bold">Subscribe To Our Newsletter</h5>
             <div className="form-group">
               <input
                 type="text"
