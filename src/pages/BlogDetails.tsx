@@ -24,9 +24,6 @@ const Blog = () => {
 
   const blog = posts.find((post) => post.slug.toString() === slug);
 
-  console.log("blog", blog);
-console.log("callout", blog?.callout);
-console.log("product_card", blog?.product_card);
 
 
 

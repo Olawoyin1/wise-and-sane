@@ -27,7 +27,6 @@ interface BlogContentViewerProps extends CardItem {
   product_card?: ProductCardType;
 }
 
-
 const slugify = (text: string | null | undefined): string =>
   (text ?? "")
     .toLowerCase()
@@ -47,12 +46,12 @@ const BlogContentViewer: React.FC<BlogContentViewerProps> = (props) => {
     body,
     quote,
     contentImages = [],
-    blogContentVideo,
+    // blogContentVideo,
     slug,
     description,
     category,
     tag,
-    subTag,
+    subtag,
     subTagC,
     buttonLabel = "Read More",
     buttonLink = "#",
@@ -60,7 +59,7 @@ const BlogContentViewer: React.FC<BlogContentViewerProps> = (props) => {
     callout,
     product_card,
   } = props;
- 
+
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [tocOpen, setTocOpen] = useState(false);
   const [activeSectionId, setActiveSectionId] = useState<string>("");
@@ -96,6 +95,12 @@ const BlogContentViewer: React.FC<BlogContentViewerProps> = (props) => {
   });
 
   useEffect(() => {
+    if (sections.length > 0 && !activeSectionId) {
+      setActiveSectionId(sections[0].id);
+    }
+  }, [sections, activeSectionId]);
+
+  useEffect(() => {
     document.body.style.overflow = lightboxIndex !== null ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
@@ -125,15 +130,14 @@ const BlogContentViewer: React.FC<BlogContentViewerProps> = (props) => {
     description,
     category,
     tag,
-    subTag,
+    subtag,
     subTagC,
     buttonLabel,
     buttonLink,
     buttonBgColor,
-    
   };
 
-  console.log(callout)
+  console.log(callout);
 
   const activeSection =
     sections.find((s) => s.id === activeSectionId) || sections[0];
@@ -260,11 +264,15 @@ const BlogContentViewer: React.FC<BlogContentViewerProps> = (props) => {
             )}
 
             {/* Quote appears here */}
-            {quote && (
-              <blockquote className="relative min-h-50 flex items-center justify-center text-sm md:text-[17px] leading-8 p-10 rounded text-gray-700 my-8">
-                {quote}
-                <BiSolidQuoteAltRight className="absolute text-gray-300 text-7xl bottom-4 z-[-1] right-4" />
-              </blockquote>
+            {activeSectionId === sections[0]?.id && (
+              <>
+                {quote && (
+                  <blockquote className="relative min-h-50 flex items-center justify-center text-sm md:text-[17px] leading-8 p-10 rounded text-gray-700 my-8">
+                    {quote}
+                    <BiSolidQuoteAltRight className="absolute text-gray-300 text-7xl bottom-4 z-[-1] right-4" />
+                  </blockquote>
+                )}
+              </>
             )}
 
             {/* Rest Content */}
@@ -284,96 +292,109 @@ const BlogContentViewer: React.FC<BlogContentViewerProps> = (props) => {
           </motion.div>
         </AnimatePresence>
 
-        {/* Video */}
-        <div className="w-full mt-6 mb-6">
-          {blogContentVideo ? (
-            <video
-              controls
-              className="w-full rounded-lg shadow"
-              preload="metadata"
-            >
-              <source src={blogContentVideo} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          ) : (
-            <div className="flex items-center justify-center border border-dashed border-gray-300 rounded-lg p-6 bg-gray-50">
-              <div className="text-center text-gray-500">
-                <p className="font-semibold">
-                  Blog content video not available
+        {activeSectionId === sections[0]?.id && (
+          <>
+            {/* Video */}
+            <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-black group shadow-lg">
+              {/* Background shimmer or gradient */}
+              <div className="absolute inset-0 bg-gradient-to-br from-neutral-800 to-gray-900 opacity-90" />
+
+              {/* Fake play button */}
+              <div className="absolute inset-0 flex items-center justify-center z-10">
+                <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 group-hover:scale-110 transition-transform">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-8 h-8 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M6 4l10 6-10 6V4z" />
+                  </svg>
+                </div>
+              </div>
+
+              {/* Overlay text */}
+              <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 via-black/30 to-transparent z-10">
+                <p className="text-white text-sm font-semibold">
+                  Video not available
                 </p>
-                <p className="text-sm">
+                <p className="text-gray-300 text-xs">
                   A preview will appear here when provided.
                 </p>
               </div>
             </div>
-          )}
-        </div>
-
-        {/* Callouts */}
-
-        {callout && (
-          <div className="grid gap-4 mt-6">
-            {callout.solution && (
-              <div className="bg-[#E4F5FC] bf p-4 rounded-lg border border-gray-300 flex items-start gap-3">
-                <span className="text-xl">💡</span>
-                <p className="text-gray-700 text-xs leading-5 md:text-sm md:leading-7">
-                  {callout.solution}
-                </p>
-              </div>
-            )}
-            {callout.change && (
-              <div className="bg-[#FDF3E0] bf p-4 rounded-lg border border-gray-300 flex items-start gap-3">
-                <span className="text-xl">💪</span>
-                <p className="text-gray-700 text-xs leading-5 md:text-sm md:leading-7">
-                  {callout.change}
-                </p>
-              </div>
-            )}
-            {callout.action && (
-              <div className="bg-[#E6F6E8] bf p-4 rounded-lg border border-gray-300 flex items-start gap-3">
-                <span className="text-xl">✔️</span>
-                <p className="text-gray-700 text-xs leading-5 md:text-sm md:leading-7">
-                  {callout.action}
-                </p>
-              </div>
-            )}
-            {callout.purpose && (
-              <div className="bg-[#FCEBF6] bf p-4 rounded-lg border border-gray-300 flex items-start gap-3">
-                <span className="text-xl">👍</span>
-                <p className="text-gray-700 text-xs leading-5 md:text-sm md:leading-7">
-                  {callout.purpose}
-                </p>
-              </div>
-            )}
-          </div>
+          </>
         )}
 
-        {/* <div className="mt-10 grid bf grid-cols-1 gap-4">
-        {(callouts.length > 0
-          ? callouts
-          : ["<p>No callouts provided.</p>"]
-        ).map((html, i) => (
-          <div
-            key={i}
-            className="border border-yellow-300 bg-yellow-50 p-4 rounded shadow"
-            dangerouslySetInnerHTML={{ __html: html }}
-          />
-        ))}
-      </div> */}
+        {(sections.length <= 1 ||
+          activeSectionId === sections[sections.length - 1]?.id) && (
+          <>
+            {/* Image Gallery */}
+            {contentImages.length > 0 && (
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-10">
+                {contentImages.map((img, i) => (
+                  <img
+                    key={i}
+                    src={img}
+                    alt={`Gallery ${i + 1}`}
+                    className="w-full h-40 object-cover rounded-lg shadow cursor-pointer"
+                    onClick={() => setLightboxIndex(i)}
+                  />
+                ))}
+              </div>
+            )}
 
-        {/* Image Gallery */}
-        {contentImages.length > 0 && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-10">
-            {contentImages.map((img, i) => (
-              <img
-                key={i}
-                src={img}
-                alt={`Gallery ${i + 1}`}
-                className="w-full h-40 object-cover rounded-lg shadow cursor-pointer"
-                onClick={() => setLightboxIndex(i)}
-              />
-            ))}
-          </div>
+            {/* Callouts */}
+            {callout && (
+              <div className="grid gap-4 mt-6">
+                {callout.solution && (
+                  <div className="bg-[#E4F5FC] bf p-4 rounded-lg border border-gray-300 flex items-start gap-3">
+                    <span className="text-xl">💡</span>
+                    <p className="text-gray-700 text-xs leading-5 md:text-sm md:leading-7">
+                      {callout.solution}
+                    </p>
+                  </div>
+                )}
+                {callout.change && (
+                  <div className="bg-[#FDF3E0] bf p-4 rounded-lg border border-gray-300 flex items-start gap-3">
+                    <span className="text-xl">💪</span>
+                    <p className="text-gray-700 text-xs leading-5 md:text-sm md:leading-7">
+                      {callout.change}
+                    </p>
+                  </div>
+                )}
+                {callout.action && (
+                  <div className="bg-[#E6F6E8] bf p-4 rounded-lg border border-gray-300 flex items-start gap-3">
+                    <span className="text-xl">✔️</span>
+                    <p className="text-gray-700 text-xs leading-5 md:text-sm md:leading-7">
+                      {callout.action}
+                    </p>
+                  </div>
+                )}
+                {callout.purpose && (
+                  <div className="bg-[#FCEBF6] bf p-4 rounded-lg border border-gray-300 flex items-start gap-3">
+                    <span className="text-xl">👍</span>
+                    <p className="text-gray-700 text-xs leading-5 md:text-sm md:leading-7">
+                      {callout.purpose}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Product Card */}
+            {product_card && (
+              <div className="mt-10">
+                <ProductCard
+                  image={product_card.image}
+                  title={product_card.title}
+                  description={product_card.details}
+                  buttonLabel="Purchase this product"
+                  onClick={() => window.open(product_card.link, "_blank")}
+                />
+              </div>
+            )}
+          </>
         )}
 
         {/* Lightbox */}
@@ -425,30 +446,6 @@ const BlogContentViewer: React.FC<BlogContentViewerProps> = (props) => {
             </div>
           </div>
         )}
-
-        {/* Product Card */}
-        {product_card && (
-  <div className="mt-10">
-    <ProductCard
-      image={product_card.image}
-      title={product_card.title}
-      description={product_card.details}
-      buttonLabel="Purchase this product"
-      onClick={() => window.open(product_card.link, "_blank")}
-    />
-  </div>
-)}
-
-
-        {/* <div className="mt-10">
-        {productCard || (
-          <div className="border border-dashed border-gray-400 p-6 rounded-lg text-center text-gray-500">
-            Product coming soon. Stay tuned!
-          </div>
-        )}
-      </div> */}
-        
-
         <Share />
       </article>
     </>
