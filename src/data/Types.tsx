@@ -10,7 +10,7 @@ export interface CardItem {
   description: string;
   category: string;
   tag?: string;            // Article, Wisdom, Video
-  subTag?: string;         // Solution, Asia, Arabia, etc.
+  subtag?: string;         // Solution, Asia, Arabia, etc.
   subTagC?: string;        // Optional translated subtag or variation
   image: string;           // Main image
   video?: string;          // Optional primary video

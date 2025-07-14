@@ -8,13 +8,18 @@ const SingleCard = ({ item }: { item: CardItem }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-
   const getFirstParagraph = (html: string) => {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, "text/html");
-  const p = doc.querySelector("p");
-  return p ? p.outerHTML : "";
-};
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+    const p = doc.querySelector("p");
+    return p ? p.outerHTML : "";
+  };
+
+  const CATEGORY_COLORS: Record<string, string> = {
+    Wisdom: "#f9f9f0",
+    Article: "#BFDDF2",
+    Video: "#B8F2E6",
+  };
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -33,10 +38,17 @@ const SingleCard = ({ item }: { item: CardItem }) => {
         onClick={() => isMobile && setIsHovered((prev) => !prev)}
       >
         {/* Image Background */}
-        <div
+        {/* <div
           className="w-full h-full bg-cover bg-center border border-gray-300 rounded-xl"
           style={{ backgroundImage: `url(${item.image})` }}
-        />
+        /> */}
+        <div className="w-full h-full border border-gray-300 rounded-xl overflow-hidden">
+          <img
+            src={item.image}
+            alt={item.title}
+            className="w-full h-full object-cover"
+          />
+        </div>
 
         {/* Overlay Frame */}
         <motion.div
@@ -58,7 +70,7 @@ const SingleCard = ({ item }: { item: CardItem }) => {
               className={`
                 absolute
                 ${
-                  item.subTag 
+                  item.subtag
                     ? "top-21"
                     : item.category === "Article"
                     ? "top-17"
@@ -78,25 +90,31 @@ const SingleCard = ({ item }: { item: CardItem }) => {
               <div className="w-max">
                 <Link
                   to={`/tag/${item.category}`}
-                  className="text-sm sm:text-[16px] border z-20 border-black/90 rounded-full 
-                  px-4 py-[3px] font-bold no-underline 
-                  flex justify-center items-center transform rotate-180 origin-center"
-                  style={{ backgroundColor: item.buttonBgColor }}
+                  className={`text-sm sm:text-[16px]  border z-20 border-black/90 rounded-full px-4 py-[3px] font-bold no-underline flex justify-center items-center transform rotate-180 origin-center bg-${item.buttonBgColor}`}
+                  // style={{ backgroundColor: item.buttonBgColor }}
+                  style={{
+                    backgroundColor:
+                      CATEGORY_COLORS[item.category] || "#E5E7EB",
+                  }} // fallback = gray-200
                 >
                   {item.category}
                 </Link>
               </div>
 
-              {/* Hover Subtag (only for Article & Inspiration) */}
-              {item.subTag && (
+              {/* Hover subtag (only for Article & Inspiration) */}
+              {item.subtag && (
                 <div className="relative group">
                   <Link
                     to="/"
                     className="w-8 h-8 sm:h-9 sm:w-9 border border-black/90 rounded-full 
                     flex justify-center items-center rotate-270 text-xs font-bold md:text-sm"
-                    style={{ backgroundColor: item.buttonBgColor }}
+                    // style={{ backgroundColor: item.buttonBgColor }}
+                    style={{
+                      backgroundColor:
+                        CATEGORY_COLORS[item.category] || "#E5E7EB",
+                    }}
                   >
-                    {item.subTag?.charAt(0)}
+                    {item.subtag?.charAt(0)}
                   </Link>
 
                   <div
@@ -112,15 +130,13 @@ const SingleCard = ({ item }: { item: CardItem }) => {
                       whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30
                     `}
                   >
-                    {item.category === "Inspiration"
-                      ? item.subTagC
-                      : item.subTag}
+                    {item.subtag}
                   </div>
                 </div>
               )}
             </div>
           </Link>
-        </motion.div> 
+        </motion.div>
       </div>
 
       {/* Text */}
@@ -130,12 +146,10 @@ const SingleCard = ({ item }: { item: CardItem }) => {
             {item.title}
           </h1>
 
-
           <p
-  className="text-gray-700 pf line-clamp-3 leading-loose text-xs mb-3"
-  dangerouslySetInnerHTML={{ __html: getFirstParagraph(item.body) }}
-/>
-
+            className="text-gray-700 pf line-clamp-3 leading-loose text-xs mb-3"
+            dangerouslySetInnerHTML={{ __html: getFirstParagraph(item.body) }}
+          />
 
           <div className="flex items-center justify-between">
             <FancyLinkButton

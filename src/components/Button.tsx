@@ -8,14 +8,22 @@ interface FancyLinkButtonProps {
   bgColor?: string;
   textColor?: string;
   block?: boolean;
+  category?: string; // NEW
 }
 
+const CATEGORY_COLORS: Record<string, string> = {
+  Wisdom: "#f9f9f0",
+  Article: "#BFDDF2",
+  Video: "#B8F2E6",
+};
+
 const FancyLinkButton: React.FC<FancyLinkButtonProps> = ({
-  label,
+  label = "Read More",
   to,
-  bgColor = "#E8D4C3",
+  bgColor,
   textColor = "#333",
   block = false,
+  category,
 }) => {
   const btnRef = useRef<HTMLDivElement>(null);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
@@ -29,6 +37,8 @@ const FancyLinkButton: React.FC<FancyLinkButtonProps> = ({
     setCoords({ x, y });
   };
 
+  const resolvedBgColor = bgColor || (category ? CATEGORY_COLORS[category] : "#E5E7EB");
+
   return (
     <Link to={to} className={block ? "block w-full" : ""}>
       <div
@@ -36,12 +46,12 @@ const FancyLinkButton: React.FC<FancyLinkButtonProps> = ({
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         onMouseMove={handleMouseMove}
-        className={`relative inline-flex items-center justify-center px-4 sm:px-7  py-2 text-xs md:text-sm font-bold rounded-full cursor-pointer my-2 ${block ? "w-full" : ""}`}
-        style={{ backgroundColor: bgColor, color: textColor }}
+        className={`relative inline-flex items-center justify-center px-4 sm:px-7 py-2 text-xs md:text-sm font-bold rounded-full cursor-pointer my-2 ${block ? "w-full" : ""}`}
+        style={{ backgroundColor: resolvedBgColor, color: textColor }}
       >
         {/* Decorative shrinking border */}
         <motion.span
-          className="absolute border border-black rounded-full  pointer-events-none"
+          className="absolute border border-black rounded-full pointer-events-none"
           initial={{
             width: "100%",
             height: "100%",
@@ -73,7 +83,7 @@ const FancyLinkButton: React.FC<FancyLinkButtonProps> = ({
           {hovered && (
             <motion.span
               key="cursor-circle"
-              className="absolute w-4 h-4 bg-white rounded-full pointer-events-none "
+              className="absolute w-4 h-4 bg-white rounded-full pointer-events-none"
               animate={{
                 left: coords.x - 10,
                 top: coords.y - 10,
@@ -86,7 +96,7 @@ const FancyLinkButton: React.FC<FancyLinkButtonProps> = ({
         </AnimatePresence>
 
         {/* Button Text */}
-        <span className="relative ">{label}</span>
+        <span className="relative">{label}</span>
       </div>
     </Link>
   );

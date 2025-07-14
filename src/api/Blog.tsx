@@ -33,7 +33,7 @@ export const fetchBlogPosts = async (): Promise<CardItem[]> => {
       description: plainText,
       category: post.category,
       tag: post.tag,
-      subTag: post.subtag,
+      subtag: post.subtag,
       subTagC: post.subtag,
       image: post.image || "",
       video: post.video,

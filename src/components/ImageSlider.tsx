@@ -8,7 +8,7 @@ const ImageSlider: React.FC = () => {
         <div className='absolute w-full md:h-[500px] h-[350px] border border-gray-700 rounded-xl -left-1 top-1 md:-left-4 md:top-3 z-20'/>
       
       <div className="w-full  h-[350px] md:h-[500px] object-cover flex items-center justify-center overflow-hidden rounded-lg z-50" >
-        <img src="../../Images/hero3.webp" alt="" className='object-cover h-full' />
+        <img src="../../Images/hero3.webp" alt="" className='object-cover w-full h-full' />
       </div>
     </div>
   );

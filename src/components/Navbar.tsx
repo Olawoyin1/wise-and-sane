@@ -25,13 +25,13 @@ const itemVariant: Variants = {
 
 const navItems = [
   { name: "LAST GENERATION", key: "last-generation" },
-  { name: "SOSIOLOJI", key: "sosioloji" },
-  { name: "OUR PURPOSE", key: "purpose" },
+  { name: "WISE AND SANE", key: "sosioloji" },
+  { name: "THE PURPOSE", key: "purpose" },
   { name: "THE EDITOR", key: "editor" },
-  { name: "CONTRIBUTORS", key: "contributors" },
-  { name: "JOIN THE MOVEMENT", key: "movement" },
-  { name: "FILOSOFI", key: "filosofi" },
-  { name: "IDEA IS CAP", key: "ideaiscapital" },
+  // { name: "CONTRIBUTORS", key: "contributors" },
+  // { name: "JOIN THE MOVEMENT", key: "movement" },
+  // { name: "FILOSOFI", key: "filosofi" },
+  // { name: "IDEA IS CAP", key: "ideaiscapital" },
   { name: "CONNECT", key: "connect" },
 ];
 
