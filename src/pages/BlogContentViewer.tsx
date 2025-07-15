@@ -5,7 +5,7 @@ import Share from "../blog/Share";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import { BiSolidQuoteAltRight } from "react-icons/bi";
-// import Callout from "../blog/Callout";
+import { IoCloseOutline } from "react-icons/io5";
 import ProductCard from "../blog/ProductCard";
 
 interface CalloutType {
@@ -46,7 +46,6 @@ const BlogContentViewer: React.FC<BlogContentViewerProps> = (props) => {
     body,
     quote,
     contentImages = [],
-    // blogContentVideo,
     slug,
     description,
     category,
@@ -67,19 +66,24 @@ const BlogContentViewer: React.FC<BlogContentViewerProps> = (props) => {
 
   const parser = new DOMParser();
   const doc = parser.parseFromString(body, "text/html");
-  const headings = Array.from(doc.querySelectorAll("h1"));
 
-  const sections = headings.map((heading, index) => {
-    const id = heading.id || slugify(heading.textContent || `section-${index}`);
-    heading.id = id;
-    const sectionContentNodes: ChildNode[] = [];
-    let next = heading.nextSibling;
-    while (next && next.nodeName !== "H1") {
-      sectionContentNodes.push(next);
-      next = next.nextSibling;
-    }
+  const sections: { id: string; title: string; content: string }[] = [];
+  const childNodes = Array.from(doc.body.childNodes);
+
+  let currentIndex = 0;
+
+  // Capture leading nodes before first <h1> as "Untitled"
+  const untitledNodes: ChildNode[] = [];
+  while (
+    currentIndex < childNodes.length &&
+    !(childNodes[currentIndex].nodeName === "H1")
+  ) {
+    untitledNodes.push(childNodes[currentIndex]);
+    currentIndex++;
+  }
+  if (untitledNodes.length > 0) {
     const container = document.createElement("div");
-    sectionContentNodes.forEach((node) => {
+    untitledNodes.forEach((node) => {
       if (
         node.nodeType === Node.ELEMENT_NODE ||
         node.nodeType === Node.TEXT_NODE
@@ -87,12 +91,42 @@ const BlogContentViewer: React.FC<BlogContentViewerProps> = (props) => {
         container.appendChild(node.cloneNode(true));
       }
     });
-    return {
-      id,
-      title: heading.textContent || `Section ${index + 1}`,
+    sections.push({
+      id: "untitled",
+      title: "Untitled",
       content: container.innerHTML,
-    };
-  });
+    });
+  }
+
+  // Capture the rest of the <h1>-based sections
+  const remaining = childNodes.slice(currentIndex);
+  for (let i = 0; i < remaining.length; i++) {
+    const node = remaining[i];
+    if (node.nodeName === "H1") {
+      const heading = node as HTMLElement;
+      const id = heading.id || slugify(heading.textContent || `section-${i}`);
+      heading.id = id;
+
+      const title = heading.textContent || `Section ${i + 1}`;
+      const contentNodes: ChildNode[] = [];
+      i++;
+
+      while (i < remaining.length && remaining[i].nodeName !== "H1") {
+        contentNodes.push(remaining[i]);
+        i++;
+      }
+      i--; // Adjust for outer loop
+
+      const container = document.createElement("div");
+      contentNodes.forEach((n) => container.appendChild(n.cloneNode(true)));
+
+      sections.push({
+        id,
+        title,
+        content: container.innerHTML,
+      });
+    }
+  }
 
   useEffect(() => {
     if (sections.length > 0 && !activeSectionId) {
@@ -137,25 +171,19 @@ const BlogContentViewer: React.FC<BlogContentViewerProps> = (props) => {
     buttonBgColor,
   };
 
-  console.log(callout);
-
   const activeSection =
     sections.find((s) => s.id === activeSectionId) || sections[0];
   const sectionDoc = parser.parseFromString(activeSection.content, "text/html");
-  const paragraphs = Array.from(sectionDoc.querySelectorAll("p"));
-  const unorderedList = sectionDoc.querySelector("ul");
+  const allElements = Array.from(sectionDoc.body.children);
 
-  const restContent = Array.from(sectionDoc.body.children).filter(
-    (node) =>
-      !paragraphs.slice(0, 4).includes(node as HTMLParagraphElement) &&
-      node !== unorderedList
-  );
+  const first4 = allElements.slice(0, 4);
+  const rest = allElements.slice(4);
 
   return (
     <>
       <BlogHero blog={blog} height="medium" />
       <article className="prose prose-lg max-w-3xl mx-auto px-8 sm:px-6 scroll-smooth">
-        <h1 className="text-2xl sm:text-4xl max-w-xl mx-auto text-center font-semibold mt-6">
+        <h1 className="text-2xl sm:text-4xl max-w-xl mx-auto text-center font-semibold mt-7 md:mt-14">
           {title}
         </h1>
 
@@ -164,7 +192,7 @@ const BlogContentViewer: React.FC<BlogContentViewerProps> = (props) => {
             {new Date(created_at).toDateString()}
           </p>
           <div className="flex items-center gap-2">
-            <div className="h-8 w-8 sm:h-10 sm:w-10 overflow-hidden bg-black/30 rounded-full">
+            <div className="h-7 w-7 overflow-hidden bg-black/30 rounded-full">
               <img
                 src="https://th.bing.com/th/id/OIP.ItvA9eX1ZIYT8NHePqeuCgHaHa?w=210"
                 alt="Author"
@@ -175,16 +203,13 @@ const BlogContentViewer: React.FC<BlogContentViewerProps> = (props) => {
           </div>
         </div>
 
-        {/* TOC */}
         {sections.length > 1 && (
-          <div className="mb-6 border-b border-gray-200 pb-4" ref={tocRef}>
+          <div className="mb-6 border-b border-gray-500 pb-4" ref={tocRef}>
             <button
               onClick={() => setTocOpen(!tocOpen)}
               className="w-full py-2 text-left flex justify-between items-center"
             >
-              <span className="text-gray-800 font-medium">
-                Table of Contents
-              </span>
+              <span className="text-gray-800 font-bold">Table of Contents</span>
               <svg
                 className={`w-5 h-5 ml-2 transition-transform duration-300 ${
                   tocOpen ? "rotate-180" : "rotate-0"
@@ -234,68 +259,87 @@ const BlogContentViewer: React.FC<BlogContentViewerProps> = (props) => {
           </div>
         )}
 
-        {/* Section Content */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeSectionId}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
-          >
-            {paragraphs.slice(0, 4).map((p, i) => (
-              <div
-                key={i}
-                className="mb-4 text-sm sm:text-[15px] bf"
-                dangerouslySetInnerHTML={{ __html: p.outerHTML }}
-              />
-            ))}
+        {/* Section Preview Content */}
+        <motion.div
+          key={activeSectionId}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.3 }}
+        >
+          <div className="mt-8 bf text-sm sm:text-[15px] space-y-7">
+            {first4.map((node, i) => {
+              const html = node.outerHTML
+                .replace(/<img\s/gi, '<img class="w-full" ')
+                .replace(/<ul(\s|>)/gi, '<ul class="list-disc pl-5"$1')
+                .replace(/<ol(\s|>)/gi, '<ol class="list-decimal pl-5"$1')
+                .replace(/<li(\s|>)/gi, '<li class="mb-2"$1');
 
-            {unorderedList && (
-              <div
-                className="mb-6 text-sm sm:text-[15px] bf"
-                dangerouslySetInnerHTML={{
-                  __html: unorderedList.outerHTML.replace(
-                    "<ul",
-                    '<ul class="list-disc pl-5"'
-                  ),
-                }}
-              />
-            )}
+              return (
+                <div
+                  key={`rest-${i}`}
+                  className="prose prose-sm sm:prose-base max-w-none"
+                  dangerouslySetInnerHTML={{ __html: html }}
+                />
+              );
+            })}
+          </div>
 
-            {/* Quote appears here */}
-            {activeSectionId === sections[0]?.id && (
-              <>
-                {quote && (
-                  <blockquote className="relative min-h-50 flex items-center justify-center text-sm md:text-[17px] leading-8 p-10 rounded text-gray-700 my-8">
-                    {quote}
-                    <BiSolidQuoteAltRight className="absolute text-gray-300 text-7xl bottom-4 z-[-1] right-4" />
-                  </blockquote>
-                )}
-              </>
-            )}
+          {/* Quote */}
+          {activeSectionId === sections[0]?.id && quote && (
+            <blockquote className="relative min-h-50 flex items-center justify-center text-sm md:text-[17px] leading-8 p-10 rounded text-gray-700 my-8">
+              {quote}
+              <BiSolidQuoteAltRight className="absolute text-gray-300 text-7xl bottom-4 z-[-1] right-4" />
+            </blockquote>
+          )}
 
-            {/* Rest Content */}
-            <div className="mt-8 bf text-sm sm:text-[15px] space-y-6">
-              {restContent.map((node, i) => {
-                let html = (node as HTMLElement).outerHTML;
-                html = html.replace(/<img\s/gi, '<img class="w-full" ');
-                return (
-                  <div
-                    key={i}
-                    className="w-full"
-                    dangerouslySetInnerHTML={{ __html: html }}
-                  />
-                );
-              })}
-            </div>
-          </motion.div>
-        </AnimatePresence>
+          {/* Remaining content */}
+          {/* <div className="max-w-none bf space-y-7">
+            <div
+              dangerouslySetInnerHTML={{
+                __html: rest
+                  .map((node) =>
+                    node.outerHTML
+                      .replace(/<img\s/gi, '<img class="w-full" ')
+                      .replace(/<ul(\s|>)/gi, '<ul class="list-disc pl-5"$1')
+                      .replace(/<ol(\s|>)/gi, '<ol class="list-decimal pl-5"$1')
+                      .replace(/<li(\s|>)/gi, '<li class="mb-2"$1')
+                  )
+                  .join(""),
+              }}
+            />
+          </div> */}
 
+
+          <div
+  className="prose prose-sm sm:prose-base text-sm sm:text-[15px] max-w-none space-y-7 bf mt-8"
+  dangerouslySetInnerHTML={{
+    __html: rest
+      .map((node) => {
+        let html = node.outerHTML;
+
+        // Make images full width and add margin
+        html = html.replace(/<img\s/gi, '<img class="w-full my-4" ');
+
+        html = html.replace(
+          /<(ul|ol)(.*?)>/gi,
+          '<$1 class="list-disc pl-7  md:pl-16 my-4"$2>'
+        );
+
+        return html;
+      })
+      .join(""),
+  }}
+/>
+
+
+        </motion.div>
+
+        {/* ... (keep your video, gallery, callouts, lightbox logic here) ... */}
         {activeSectionId === sections[0]?.id && (
           <>
             {/* Video */}
-            <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-black group shadow-lg">
+            <div className="relative w-full mt-8 aspect-video rounded-xl overflow-hidden bg-black group shadow-lg">
               {/* Background shimmer or gradient */}
               <div className="absolute inset-0 bg-gradient-to-br from-neutral-800 to-gray-900 opacity-90" />
 
@@ -331,13 +375,13 @@ const BlogContentViewer: React.FC<BlogContentViewerProps> = (props) => {
           <>
             {/* Image Gallery */}
             {contentImages.length > 0 && (
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-10">
+              <div className="grid grid-cols-3 gap-3 md:gap-4 mt-10">
                 {contentImages.map((img, i) => (
                   <img
                     key={i}
                     src={img}
                     alt={`Gallery ${i + 1}`}
-                    className="w-full h-40 object-cover rounded-lg shadow cursor-pointer"
+                    className="w-full md:h-40 object-cover rounded-lg shadow cursor-pointer"
                     onClick={() => setLightboxIndex(i)}
                   />
                 ))}
@@ -419,7 +463,13 @@ const BlogContentViewer: React.FC<BlogContentViewerProps> = (props) => {
               >
                 <FaArrowLeftLong />
               </button>
-
+              <div className="mt-3 text-lg px-3 py-1 z-50">
+                <IoCloseOutline
+                  onClick={() => setLightboxIndex(null)}
+                  className="cursor-pointer"
+                  size={30}
+                />
+              </div>
               <motion.img
                 key={contentImages[lightboxIndex]}
                 src={contentImages[lightboxIndex]}
@@ -439,13 +489,14 @@ const BlogContentViewer: React.FC<BlogContentViewerProps> = (props) => {
                       : lightboxIndex + 1
                   )
                 }
-                className="fixed right-0 top-0 bottom-0 flex items-center justify-center w-16 text-xl md:text-4xl z-50"
+                className="fixed right-0 top-0 bottom-0 flex items-center justify-center w-16 text-xl md:text-4xl z-20"
               >
                 <FaArrowRightLong />
               </button>
             </div>
           </div>
         )}
+
         <Share />
       </article>
     </>
